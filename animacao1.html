@@ -24,22 +24,26 @@
 		var ctx = tela.getContext("2d");
 		var fps = 50;
 		var dt = 1/fps;
- 		var x = 110;
- 		var y = 115;
- 		var vx = 0;
- 		var ax = 0;
- 		var vy = 0;
- 		var ay = 0;
- 		
 
+		var pc = new Sprite();
 
- 		function mover(){
- 			vx = vx + ax*dt;
- 			x = x + vx*dt;
- 			vy = vy + ay*dt;
- 			y = y + vy*dt;
+		function Sprite(){
+	 		this.x = 110;
+	 		this.y = 115;
+	 		this.vx = 0;
+	 		this.ax = 0;
+	 		this.vy = 0;
+	 		this.ay = 0;
  		}
- 		function desenhar(){
+ 		
+ 		Sprite.prototype.mover = function (){
+ 			this.vx = this.vx + this.ax*dt;
+ 			this.x = this.x + this.vx*dt;
+ 			this.vy = this.vy + this.ay*dt;
+ 			this.y = this.y + this.vy*dt;
+ 		}
+
+ 		Sprite.prototype.desenhar = function (){
  			ctx.clearRect(0,0, tela.width, tela.height);
 
 			ctx.fillStyle = "rgb(250, 200, 200)";
@@ -47,54 +51,55 @@
 			ctx.lineWidth = 3;
 
 			ctx.beginPath();
-			ctx.arc(x, y, 15, 0, 2*Math.PI);
+			ctx.arc(this.x, this.y, 15, 0, 2*Math.PI);
 			ctx.closePath();
 			ctx.fill();
 			ctx.stroke();
 		}
-		function passo(){
-			mover();
-			restricoes();
-			desenhar();
+
+		Sprite.prototype.restricoes = function(){
+			if(this.x<15){
+				this.x = 15;
+				this.vx = 0;
+				this.ax = 0;
+			}
+			if(this.x>tela.width-15) {
+				this.x=tela.width-15;
+				this.vx = 0;
+				this.ax = 0;
+			}
+			if(this.y<15){
+				this.y = 15;
+				this.vy = 0;
+				this.ay = 0;
+			}
+			if(this.y>tela.height-15) {
+				this.y=tela.height-15;
+				this.vy = 0;
+				this.ay = 0;
+			}
 		}
 
-		function restricoes(){
-			if(x<15){
-				x = 15;
-				vx = 0;
-				ax = 0;
-			}
-			if(x>tela.width-15) {
-				x=tela.width-15;
-				vx = 0;
-				ax = 0;
-			}
-			if(y<15){
-				y = 15;
-				vy = 0;
-				ay = 0;
-			}
-			if(y>tela.height-15) {
-				y=tela.height-15;
-				vy = 0;
-				ay = 0;
-			}
+		function passo(){
+			pc.mover();
+			pc.restricoes();
+			pc.desenhar();
 		}
 
 		function teclaPressionada(e){
 			console.log("Tecla Pressionada: " + e.keyCode);
 			switch(e.keyCode){
 				case 37:
-					ax = -300;					
+					pc.ax = -300;					
 				break;
 				case 39:
-					ax = 300;					
+					pc.ax = 300;					
 				break;
 				case 38:
-					ay = -300;					
+					pc.ay = -300;					
 				break;
 				case 40:
-					ay = 300;					
+					pc.ay = 300;					
 				break;
 			}
 
@@ -105,11 +110,11 @@
 			switch(e.keyCode){
 				case 37:
 				case 39:
-					ax = 0;					
+					pc.ax = 0;					
 				break;
 				case 38:
 				case 40:
-					ay = 0;					
+					pc.ay = 0;					
 				break;
 			}
 		}
