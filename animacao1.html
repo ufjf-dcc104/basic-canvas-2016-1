@@ -57,7 +57,22 @@
 			desenhar();
 		}
 
+		function teclaPressionada(){
+			console.log("Tecla Pressionada!");
+			ax = 50;
+		}
+
+		function teclaSolta(){
+			console.log("Tecla Solta!");
+			ax = 0;
+		}
+
 		setInterval(passo, 1000/fps);
+		addEventListener("keydown", teclaPressionada);
+		addEventListener("keyup", teclaSolta);
+
+
+
 	</script>
 	</body>
 </html>
