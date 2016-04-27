@@ -57,14 +57,37 @@
 			desenhar();
 		}
 
-		function teclaPressionada(){
-			console.log("Tecla Pressionada!");
-			ax = 50;
+		function teclaPressionada(e){
+			console.log("Tecla Pressionada: " + e.keyCode);
+			switch(e.keyCode){
+				case 37:
+					ax = -300;					
+				break;
+				case 39:
+					ax = 300;					
+				break;
+				case 38:
+					ay = -300;					
+				break;
+				case 40:
+					ay = 300;					
+				break;
+			}
+
 		}
 
-		function teclaSolta(){
-			console.log("Tecla Solta!");
-			ax = 0;
+		function teclaSolta(e){
+			console.log("Tecla Solta: " + e.keyCode);
+			switch(e.keyCode){
+				case 37:
+				case 39:
+					ax = 0;					
+				break;
+				case 38:
+				case 40:
+					ay = 0;					
+				break;
+			}
 		}
 
 		setInterval(passo, 1000/fps);
