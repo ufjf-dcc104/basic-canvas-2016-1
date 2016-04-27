@@ -54,7 +54,31 @@
 		}
 		function passo(){
 			mover();
+			restricoes();
 			desenhar();
+		}
+
+		function restricoes(){
+			if(x<15){
+				x = 15;
+				vx = 0;
+				ax = 0;
+			}
+			if(x>tela.width-15) {
+				x=tela.width-15;
+				vx = 0;
+				ax = 0;
+			}
+			if(y<15){
+				y = 15;
+				vy = 0;
+				ay = 0;
+			}
+			if(y>tela.height-15) {
+				y=tela.height-15;
+				vy = 0;
+				ay = 0;
+			}
 		}
 
 		function teclaPressionada(e){
