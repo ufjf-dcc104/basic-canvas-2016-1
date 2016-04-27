@@ -26,6 +26,9 @@
 		var dt = 1/fps;
 
 		var pc = new Sprite();
+		var inimigo = new Sprite();
+		inimigo.x = 250;
+		inimigo.y = 15;
 
 		function Sprite(){
 	 		this.x = 110;
@@ -44,7 +47,6 @@
  		}
 
  		Sprite.prototype.desenhar = function (){
- 			ctx.clearRect(0,0, tela.width, tela.height);
 
 			ctx.fillStyle = "rgb(250, 200, 200)";
 			ctx.strokeStyle = "rgb(150, 50, 50)";
@@ -83,7 +85,12 @@
 		function passo(){
 			pc.mover();
 			pc.restricoes();
+
+			//Limpar a tela
+ 			ctx.clearRect(0,0, tela.width, tela.height);
+
 			pc.desenhar();
+			inimigo.desenhar();
 		}
 
 		function teclaPressionada(e){
