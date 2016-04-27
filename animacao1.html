@@ -29,6 +29,16 @@
 		var inimigo = new Sprite();
 		inimigo.x = 250;
 		inimigo.y = 15;
+		inimigo.ay = 100;
+		inimigo.restricoes = function () {
+			if(this.y>tela.height+15){
+				this.y = -30-Math.random()*50;
+				this.vy = 50-Math.random()*20;
+				this.vx = 0;
+			}
+			this.ax = 0.8*(pc.x-this.x);
+			this.ay = 0.8*(pc.y-this.y);
+		}
 
 		function Sprite(){
 	 		this.x = 110;
@@ -84,7 +94,10 @@
 
 		function passo(){
 			pc.mover();
+			inimigo.mover();
+
 			pc.restricoes();
+			inimigo.restricoes();
 
 			//Limpar a tela
  			ctx.clearRect(0,0, tela.width, tela.height);
