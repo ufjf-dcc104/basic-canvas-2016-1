@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>Primitivas</title>
+		<style>
+			canvas {
+				border: 1px solid black;
+			}
+			body{
+				width: 500px;
+				margin: auto;
+			}
+		</style>
+	</head>
+	<body>
+	<h1>Primitivas</h1>
+	<canvas width="498" height="300">
+		Seu navegador não tem suporte ao canvas!
+		Atualize seu navegador.
+	</canvas>
+	<script>
+		var tela = document.getElementsByTagName("canvas")[0];
+		var ctx = tela.getContext("2d");
+		var fps = 50;
+		var dt = 1/fps;
+ 		var x = 110;
+ 		var y = 115;
+ 		var vx = 0;
+ 		var ax = 0;
+ 		var vy = 0;
+ 		var ay = 0;
+ 		
+
+
+ 		function mover(){
+ 			vx = vx + ax*dt;
+ 			x = x + vx*dt;
+ 			vy = vy + ay*dt;
+ 			y = y + vy*dt;
+ 		}
+ 		function desenhar(){
+ 			ctx.clearRect(0,0, tela.width, tela.height);
+
+			ctx.fillStyle = "rgb(250, 200, 200)";
+			ctx.strokeStyle = "rgb(150, 50, 50)";
+			ctx.lineWidth = 3;
+
+			ctx.beginPath();
+			ctx.arc(x, y, 15, 0, 2*Math.PI);
+			ctx.closePath();
+			ctx.fill();
+			ctx.stroke();
+		}
+		function passo(){
+			mover();
+			desenhar();
+		}
+
+		setInterval(passo, 1000/fps);
+	</script>
+	</body>
+</html>
+
+
+
+
+
+
