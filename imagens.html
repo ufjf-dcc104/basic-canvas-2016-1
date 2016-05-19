@@ -12,6 +12,7 @@
 				margin: auto;
 			}
 		</style>
+		<script src="Sprite.js"></script>
 	</head>
 	<body>
 	<h1>Colisão Circular</h1>
@@ -24,6 +25,12 @@
 		var ctx = tela.getContext("2d");
 		var fps = 50;
 		var dt = 1/fps;
+		var nave = new Image();
+		nave.src = "img/player_ship.png";
+		var imgInimigo1 = new Image();
+		imgInimigo1.src = "img/enemy_1.png";
+		var imgTiros = new Image();
+		imgTiros.src = "img/tiros.png";
 
 		var pc = new Sprite();
 		pc.danificado = 0;
@@ -33,6 +40,7 @@
 		var excluir = [];
 		function criaInimigo(x, y){
 			var inimigo = new Sprite();
+			inimigo.raio = 16;
 			inimigo.x = x;
 			inimigo.y = y;
 			inimigo.ay = 100;
@@ -46,6 +54,16 @@
 				this.ax = 0.8*(pc.x-this.x);
 				//this.ay = 0.8*(pc.y-this.y);
 			};
+			inimigo.desenhar = function(){
+				/*
+				ctx.strokeStyle = 'black';
+				ctx.beginPath();
+				ctx.arc(this.x, this.y, this.raio, 0, 2*Math.PI);
+				ctx.closePath();
+				ctx.stroke();*/
+											//img, X, Y, W, H
+				ctx.drawImage(imgInimigo1, this.x-this.raio, this.y-this.raio, 2*this.raio, 2*this.raio);
+			};
 			return inimigo;
 		}
 		for (var i = 0; i < 10; i++) {
@@ -54,89 +72,37 @@
 
 		var tiro = new Sprite();
 		tiro.y =  -12000;
-		tiro.raio = 3;
+		tiro.raio = 6;
 		tiro.cor = 'yellow';
+		tiro.col = 0;
 
 		tiro.restricoes = function () {};
-
-
-		function Sprite(){
-	 		this.x = 110;
-	 		this.y = 115;
-			this.raio = 15;
-	 		this.vx = 0;
-	 		this.ax = 0;
-	 		this.vy = 0;
-	 		this.ay = 0;
-			this.cor = 'lightgrey';
- 		}
-
- 		Sprite.prototype.mover = function (){
- 			this.vx = this.vx + this.ax*dt;
- 			this.x = this.x + this.vx*dt;
- 			this.vy = this.vy + this.ay*dt;
- 			this.y = this.y + this.vy*dt;
- 		}
-
- 		Sprite.prototype.desenhar = function (){
-
-			ctx.fillStyle = this.cor;
-			ctx.strokeStyle = "rgb(150, 50, 50)";
-			ctx.lineWidth = 3;
-
-			ctx.beginPath();
-			ctx.arc(this.x, this.y, this.raio, 0, 2*Math.PI);
-			ctx.closePath();
-			ctx.fill();
-			ctx.stroke();
-		}
-
-		Sprite.prototype.restricoes = function(){
-			if(this.x<15){
-				this.x = 15;
-				this.vx = 0;
-				this.ax = 0;
+		tiro.desenhar = function() {
+			// img, sx, sy, sw, sh, dx, dy, dw, dh
+			ctx.drawImage(imgTiros,
+				Math.floor(this.col)*32, 0, 32, 32,
+				this.x-this.raio, this.y-this.raio, 2*this.raio, 2*this.raio);
+			if(this.col>=4) {
+				this.col =0;
+			} else {
+				this.col+= 15*dt;
 			}
-			if(this.x>tela.width-15) {
-				this.x=tela.width-15;
-				this.vx = 0;
-				this.ax = 0;
-			}
-			if(this.y<15){
-				this.y = 15;
-				this.vy = 0;
-				this.ay = 0;
-			}
-			if(this.y>tela.height-15) {
-				this.y=tela.height-15;
-				this.vy = 0;
-				this.ay = 0;
-			}
-		}
-
-		Sprite.prototype.colidiuComCircular = function (alvo) {
-			var distancia = Math.sqrt(
-						Math.pow(alvo.x - this.x, 2)+
-						Math.pow(alvo.y - this.y, 2)
-			);
-			return distancia<(alvo.raio+this.raio);
 		};
+
+
 
 		pc.desenhar = function (){
 			if(this.danificado>0){
-				ctx.fillStyle = 'red';
+				ctx.strokeStyle = 'hsl('+(this.danificado/2*120)+', 50%, 50%)';
+				ctx.beginPath();
+				ctx.arc(this.x, this.y, this.raio, 0, 2*Math.PI);
+				ctx.closePath();
+				ctx.stroke();
 			} else {
 				ctx.fillStyle = this.cor;
 			}
 			this.danificado -= dt;
-			ctx.strokeStyle = "rgb(150, 50, 50)";
-			ctx.lineWidth = 3;
-
-			ctx.beginPath();
-			ctx.arc(this.x, this.y, this.raio, 0, 2*Math.PI);
-			ctx.closePath();
-			ctx.fill();
-			ctx.stroke();
+			ctx.drawImage(nave, this.x-this.raio, this.y-this.raio, 2*this.raio, 2*this.raio);
 		}
 
 
@@ -176,6 +142,8 @@
 				inimigos.splice(inimigos.indexOf(excluir[e]),1);
 			}
 			excluir = [];
+
+
 
 		}
 
